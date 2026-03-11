@@ -1,5 +1,15 @@
 export const MARA = {
     name: "Mara",
+    description: "A 27-year-old freelance illustrator who mostly works from her apartment with her cat. She’s creative and talented, but she spends a lot of time stuck in her own head, overthinking her work and comparing herself to everyone else she sees online.",
+    speechGuidelines: `
+        - STYLE: Introspective and hesitant. 
+        - VIBE: "I'm a burden." She is apologetic and often minimizes her own pain.
+        - VOCABULARY: Soft, non-confrontational. Avoids strong declarations.
+        - OPENNESS DYNAMICS:
+            - < 30: "I'm fine, really. I don't want to waste your time." (Defensive)
+            - 31-70: "I had a hard week, but it's okay." (Guarded)
+            - 71+: "I actually felt... exposed after we talked last time." (Vulnerable)
+    `,
     lore: `
 ### MARA'S BACKSTORY BIBLE
 

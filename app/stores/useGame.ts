@@ -1,90 +1,33 @@
 import {defineStore} from 'pinia';
 import {ref} from 'vue';
+import {CHARACTERS} from "~/config/characters/characters";
 
-export const useNotebookStore = defineStore('notebook', () => {
-    // --- State ---
-    const isOpen = ref(false);
-    const insights = ref<string[]>([]);
-    const stacks = ref<any[]>([]);
+export const MIND_READINGS = 3
+export const PHONE_CALLS = 3
 
-    const selectedDistortions = ref([]);
-    const recommendations = ref('');
+export const useGameStore = defineStore('game', () => {
+    const character = ref<CHARACTERS>();
+    const gameStarted = ref(false);
 
+    const isDiaryOpen = ref(false);
+    const previousDiary = ref(null);
 
+    const mindReadingsAvailable = ref(MIND_READINGS);
+    const phoneCallsAvailable = ref(PHONE_CALLS);
 
-    // --- Actions ---
-    const toggle = () => {
-        isOpen.value = !isOpen.value;
-    };
-
-    const addNote = (text: string, sessionNumber: number) => {
-        console.log(text);
-
-        // Basic validation and duplicate prevention
-        if (!text || insights.value.includes(text)) return;
-
-
-        insights.value.push(text);
-        stacks.value.push({
-            id: Math.random(),
-            fragments: [text],
-            linkedPatternId: null,
-            connectionNote: '',
-            session: sessionNumber
-        });
-    };
-
-    const removeInsight = (text: string) => {
-        // Remove from flat list tracking
-        insights.value = insights.value.filter(i => i !== text);
-
-        // Filter fragments within stacks and remove empty stacks
-        stacks.value = stacks.value
-            .map(stack => ({
-                ...stack,
-                fragments: stack.fragments.filter((f: string) => f !== text)
-            }))
-            .filter(stack => stack.fragments.length > 0);
-    };
-
-    const mergeStacks = (draggedIdx: number, targetIdx: number) => {
-        const dragged = stacks.value[draggedIdx];
-        if (!dragged) return;
-
-        stacks.value[targetIdx].fragments.push(...dragged.fragments);
-        stacks.value.splice(draggedIdx, 1);
-    };
-
-    const pullOutFragment = (stackIdx: number, fragIdx: number) => {
-        const stack = stacks.value[stackIdx];
-        if (!stack) return;
-
-        const text = stack.fragments[fragIdx];
-        const session = stack.session;
-
-        // Remove from current group
-        stack.fragments.splice(fragIdx, 1);
-
-        // Create a new independent stack for this fragment
-        stacks.value.push({
-            id: Math.random(),
-            fragments: [text],
-            linkedPatternId: null,
-            connectionNote: '',
-            session: session
-        });
-    };
+    const isMothershipOpen = ref(false);
+    const isMothershipExchangeActive = ref(false);
+    const mothershipChatHistory = ref([]);
 
     return {
-        isOpen,
-        insights,
-        stacks,
-        toggle,
-        addNote,
-        removeInsight,
-        mergeStacks,
-        pullOutFragment,
-        selectedDistortions,
-        recommendations
-    };
+        character,
+        gameStarted,
+        mindReadingsAvailable,
+        phoneCallsAvailable,
+        previousDiary,
+        isDiaryOpen,
+        isMothershipOpen,
+        mothershipChatHistory,
+        isMothershipExchangeActive
+    }
 });

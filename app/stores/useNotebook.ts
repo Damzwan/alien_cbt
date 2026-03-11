@@ -10,6 +10,17 @@ export const useNotebookStore = defineStore('notebook', () => {
     const selectedDistortions = ref([]);
     const recommendations = ref('');
 
+    const currentPage = ref(0); // 0: Manual, 1: Evidence, 2: Summary
+
+    const totalPages = ref(4);
+
+
+    const nextPage = () => {
+        if (currentPage.value < totalPages.value - 1) currentPage.value++;
+    };
+    const prevPage = () => {
+        if (currentPage.value > 0) currentPage.value--;
+    };
 
 
     // --- Actions ---
@@ -17,10 +28,12 @@ export const useNotebookStore = defineStore('notebook', () => {
         isOpen.value = !isOpen.value;
     };
 
-    const addNote = (text: string, sessionNumber: number) => {
-        console.log(text);
+    function openAtPage(page: number) {
+        isOpen.value = true;
+        currentPage.value = page
+    }
 
-        // Basic validation and duplicate prevention
+    const addNote = (text: string, sessionNumber: number, linkedPatternId: null | string) => {
         if (!text || insights.value.includes(text)) return;
 
 
@@ -28,9 +41,10 @@ export const useNotebookStore = defineStore('notebook', () => {
         stacks.value.push({
             id: Math.random(),
             fragments: [text],
-            linkedPatternId: null,
+            linkedPatternId: linkedPatternId,
             connectionNote: '',
-            session: sessionNumber
+            session: sessionNumber,
+            notes: ""
         });
     };
 
@@ -85,6 +99,11 @@ export const useNotebookStore = defineStore('notebook', () => {
         mergeStacks,
         pullOutFragment,
         selectedDistortions,
-        recommendations
+        recommendations,
+        currentPage,
+        prevPage,
+        nextPage,
+        totalPages,
+        openAtPage
     };
 });
